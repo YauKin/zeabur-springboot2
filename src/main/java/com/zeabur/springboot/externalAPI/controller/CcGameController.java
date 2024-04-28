@@ -1,6 +1,7 @@
 package com.zeabur.springboot.externalAPI.controller;
 
 import com.zeabur.springboot.ccgames.dto.LoginRequestDto;
+import com.zeabur.springboot.ccgames.dto.UserInfoRequestDto;
 import com.zeabur.springboot.externalAPI.service.CcGameService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +12,12 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin
 public class CcGameController {
 
+    private final CcGameService ccGameService;
+
     @Autowired
-    private CcGameService ccGameService;
+    public CcGameController(CcGameService ccGameService) {
+        this.ccGameService = ccGameService;
+    }
 
     @PostMapping(value = "/login", produces = {"application/json"}, consumes = {"application/json"})
     public String login(
@@ -21,8 +26,10 @@ public class CcGameController {
     }
 
     @PostMapping("/getUserInfo")
-    public String getUserInfo(String userId, String authLoginCode) {
-        return ccGameService.getUserInfo(userId, authLoginCode);
+    public String getUserInfo(
+            @Valid @RequestBody UserInfoRequestDto userInfoRequestDto
+    ) {
+        return ccGameService.getUserInfo(userInfoRequestDto);
     }
 
 }

@@ -12,14 +12,19 @@ import org.apache.hc.core5.http.config.Registry;
 import org.apache.hc.core5.http.config.RegistryBuilder;
 import org.apache.hc.core5.ssl.SSLContexts;
 import org.apache.hc.core5.ssl.TrustStrategy;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import javax.net.ssl.SSLContext;
 import java.security.GeneralSecurityException;
+import java.util.Map;
 
 @Service
 public class RestHelperImpl implements RestHelper {
@@ -33,31 +38,43 @@ public class RestHelperImpl implements RestHelper {
     }
 
     @Override
-    public <T> T doGet(String url, Class<T> responseClass) {
-        return doGet(url, responseClass, false);
+    public <T> T doGet(String url, Class<T> responseClass, Map<String, String> headersMap) {
+        return doGet(url, responseClass, headersMap, false);
     }
 
     @Override
-    public <T> T doGet(String url, Class<T> responseClass, boolean ignoreSSL) {
-        ResponseEntity<T> responseEntity = doGetForEntity(url, responseClass, ignoreSSL);
+    public <T> T doGet(String url, Class<T> responseClass, Map<String, String> headersMap, boolean ignoreSSL) {
+        ResponseEntity<T> responseEntity = doGetForEntity(url, responseClass, ignoreSSL, headersMap);
         return responseEntity != null ? responseEntity.getBody() : null;
     }
 
     @Override
-    public <T> ResponseEntity<T> doGetForEntity(String url, Class<T> responseClass) {
-        return doGetForEntity(url, responseClass, false);
+    public <T> ResponseEntity<T> doGetForEntity(String url, Class<T> responseClass, Map<String, String> headersMap) {
+        return doGetForEntity(url, responseClass, false, headersMap);
     }
 
     @Override
-    public <T> ResponseEntity<T> doGetForEntity(String url, Class<T> responseClass, boolean ignoreSSL) {
+    public <T> ResponseEntity<T> doGetForEntity(String url, Class<T> responseClass, boolean ignoreSSL, Map<String, String> headersMap) {
         if (url == null || responseClass == null) {
             logger.error("URL or ResponseClass provided is null");
             return null;
         }
+        // Create and populate HttpHeaders
+        HttpHeaders httpHeaders = new HttpHeaders();
+        if (headersMap != null) {
+            headersMap.forEach(httpHeaders::set);
+        }
 
+        // Prepare an HttpEntity; you might not need a body so just pass the headers
+        HttpEntity<String> entity = new HttpEntity<>(httpHeaders);
         try {
             RestTemplate client = ignoreSSL ? getRestTemplateIgnoreSSL() : restTemplate;
-            return client.getForEntity(url, responseClass);
+            // Log the API call
+            logger.info("Calling API for URL: {}", url);
+            ResponseEntity<T> responseEntity = client.exchange(url, HttpMethod.GET, entity, responseClass);
+            // Log the API call success
+            logger.info("API called successfully for URL: {}", url);
+            return responseEntity;
         } catch (Exception e) {
             logException(e);
         }
@@ -65,21 +82,15 @@ public class RestHelperImpl implements RestHelper {
     }
 
     private synchronized RestTemplate getRestTemplateIgnoreSSL() {
-        if (restTemplateIgnoreSSL == null) {
-            try {
-                restTemplateIgnoreSSL = createRestTemplate(true);
-            } catch (GeneralSecurityException e) {
-                logException(e);
-            }
+        try {
+            restTemplateIgnoreSSL = createRestTemplateWithTrustAllCerts();
+        } catch (GeneralSecurityException e) {
+            logException(e);
         }
         return restTemplateIgnoreSSL;
     }
 
-    private RestTemplate createRestTemplate(boolean ignoreSSL) throws GeneralSecurityException {
-        if (!ignoreSSL) {
-            return restTemplate;
-        }
-
+    private RestTemplate createRestTemplateWithTrustAllCerts() throws GeneralSecurityException {
         TrustStrategy acceptingTrustStrategy = (cert, authType) -> true;
         SSLContext sslContext = SSLContexts.custom()
                 .loadTrustMaterial(null, acceptingTrustStrategy)
