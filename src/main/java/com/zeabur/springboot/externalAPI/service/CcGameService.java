@@ -1,10 +1,11 @@
 package com.zeabur.springboot.externalAPI.service;
 
-import org.springframework.beans.factory.annotation.Value;
+import com.zeabur.springboot.ccgames.dto.LoginRequestDto;
 
 public interface CcGameService {
 
-    String getUserInfo(String userId, String authLoginCode);
+    String login(LoginRequestDto loginRequestDto);
 
+    String getUserInfo(String userId, String authLoginCode);
 
 }
