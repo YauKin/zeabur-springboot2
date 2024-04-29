@@ -9,4 +9,6 @@ public interface CcGameService {
 
     String getUserInfo(UserInfoRequestDto userInfoRequestDto);
 
+    String getGameList(Integer gameType, Integer page);
+
 }
