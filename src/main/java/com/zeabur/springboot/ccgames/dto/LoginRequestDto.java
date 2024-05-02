@@ -1,7 +1,9 @@
 package com.zeabur.springboot.ccgames.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 
+@Data
 public class LoginRequestDto {
 
     @JsonProperty("username")
@@ -10,19 +12,4 @@ public class LoginRequestDto {
     @JsonProperty("password")
     private String password;
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 }
