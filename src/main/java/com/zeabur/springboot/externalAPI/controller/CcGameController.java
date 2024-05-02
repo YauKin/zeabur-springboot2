@@ -1,5 +1,7 @@
 package com.zeabur.springboot.externalAPI.controller;
 
+import com.zeabur.springboot.ccgames.dto.GameListRequestDto;
+import com.zeabur.springboot.ccgames.dto.GameSearchRequestDto;
 import com.zeabur.springboot.ccgames.dto.LoginRequestDto;
 import com.zeabur.springboot.ccgames.dto.UserInfoRequestDto;
 import com.zeabur.springboot.externalAPI.service.CcGameService;
@@ -30,6 +32,20 @@ public class CcGameController {
             @Valid @RequestBody UserInfoRequestDto userInfoRequestDto
     ) {
         return ccGameService.getUserInfo(userInfoRequestDto);
+    }
+
+    @PostMapping("/getGameList")
+    public String getGameList(
+            @Valid @RequestBody GameListRequestDto gameListRequestDto
+    ){
+        return ccGameService.getGameList(gameListRequestDto);
+    }
+
+    @PostMapping("/searchGame")
+    public String searchGame(
+            @Valid @RequestBody GameSearchRequestDto gameSearchRequestDto
+    ){
+        return ccGameService.searchByGameList(gameSearchRequestDto);
     }
 
 }

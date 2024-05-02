@@ -1,18 +1,18 @@
 package com.zeabur.springboot.ccgames.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.zeabur.springboot.constant.GameType;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-public class LoginRequestDto {
+public class GameListRequestDto {
+
+    @JsonProperty("gameType")
+    @NotNull
+    private GameType gameType;
 
     @NotNull
-    @JsonProperty("username")
-    private String username;
-
-    @NotNull
-    @JsonProperty("password")
-    private String password;
-
+    @JsonProperty("page")
+    private Integer page;
 }
