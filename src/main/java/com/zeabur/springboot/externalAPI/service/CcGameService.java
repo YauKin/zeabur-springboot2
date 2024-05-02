@@ -1,9 +1,6 @@
 package com.zeabur.springboot.externalAPI.service;
 
-import com.zeabur.springboot.ccgames.dto.GameListRequestDto;
-import com.zeabur.springboot.ccgames.dto.GameSearchRequestDto;
-import com.zeabur.springboot.ccgames.dto.LoginRequestDto;
-import com.zeabur.springboot.ccgames.dto.UserInfoRequestDto;
+import com.zeabur.springboot.ccgames.dto.*;
 
 public interface CcGameService {
 
@@ -14,4 +11,8 @@ public interface CcGameService {
     String getGameList(GameListRequestDto gameListRequestDto);
 
     String searchByGameList(GameSearchRequestDto gameSearchRequestDto);
+
+    String getUserGameBookingList(UserGameBookingListRequestDto userGameBookingListRequestDto);
+
+    String getUserGameList(UserGameListRequestDto userGameListRequestDto);
 }

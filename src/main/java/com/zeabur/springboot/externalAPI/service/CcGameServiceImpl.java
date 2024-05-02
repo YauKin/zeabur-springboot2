@@ -1,15 +1,11 @@
 package com.zeabur.springboot.externalAPI.service;
 
-import com.zeabur.springboot.ccgames.dto.GameListRequestDto;
-import com.zeabur.springboot.ccgames.dto.GameSearchRequestDto;
-import com.zeabur.springboot.ccgames.dto.LoginRequestDto;
-import com.zeabur.springboot.ccgames.dto.UserInfoRequestDto;
+import com.zeabur.springboot.ccgames.dto.*;
+import com.zeabur.springboot.constant.GameListType;
 import com.zeabur.springboot.constant.GameType;
 import com.zeabur.springboot.helper.RestHelper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -57,6 +53,19 @@ public class CcGameServiceImpl implements CcGameService {
         String apiUrl = ccGameUrl + "product/getProductList/?page=" + gameSearchRequestDto.getPage() + "&key=" + gameSearchRequestDto.getKey();
         return doGetIgnoreSSL(apiUrl);
     }
+
+    @Override
+    public String getUserGameBookingList(UserGameBookingListRequestDto userGameBookingListRequestDto){
+        String apiUrl = ccGameUrl + "order/getUserPreOrderList/?userId=" + userGameBookingListRequestDto.getUserId() + "&authLoginCode=" + userGameBookingListRequestDto.getAuthLoginCode();
+        return doGetIgnoreSSL(apiUrl);
+    }
+
+    @Override
+    public String getUserGameList(UserGameListRequestDto userGameListRequestDto) {
+        String apiUrl = ccGameUrl + "order/getUserOrderList/?userId=" + userGameListRequestDto.getUserId() + "&authLoginCode=" + userGameListRequestDto.getAuthLoginCode() + "&status=" + userGameListRequestDto.getGameListType().getId();
+        return doGetIgnoreSSL(apiUrl);
+    }
+
     private String doGetIgnoreSSL(String apiUrl){
         return restHelper.doGet(apiUrl, String.class, headers, true);
     }
