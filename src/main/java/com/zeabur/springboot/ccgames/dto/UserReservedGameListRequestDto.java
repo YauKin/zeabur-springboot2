@@ -7,6 +7,6 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class UserInfoRequestDto extends CommonUserRequestDto {
+public class UserReservedGameListRequestDto extends CommonUserRequestDto{
 
 }

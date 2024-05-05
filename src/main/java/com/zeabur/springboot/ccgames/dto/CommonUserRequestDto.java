@@ -5,8 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-public class UserGameBookingListRequestDto {
-
+public class CommonUserRequestDto {
     @NotNull
     @JsonProperty("userId")
     private String userId;
@@ -14,5 +13,4 @@ public class UserGameBookingListRequestDto {
     @NotNull
     @JsonProperty("authLoginCode")
     private String authLoginCode;
-
 }

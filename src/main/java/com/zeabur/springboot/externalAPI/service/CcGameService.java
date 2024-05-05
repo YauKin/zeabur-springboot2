@@ -12,7 +12,7 @@ public interface CcGameService {
 
     String searchByGameList(GameSearchRequestDto gameSearchRequestDto);
 
-    String getUserGameBookingList(UserGameBookingListRequestDto userGameBookingListRequestDto);
+    String getReservedGameList(UserReservedGameListRequestDto userReservedGameListRequestDto);
 
-    String getUserGameList(UserGameListRequestDto userGameListRequestDto);
+    String getUserRentalGameHistory(UserRentalGameHistoryRequestDto userRentalGameHistoryRequestDto);
 }

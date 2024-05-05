@@ -1,7 +1,10 @@
 package com.zeabur.springboot.constant;
 
+import lombok.Getter;
+
+@Getter
 public enum GameType {
-    ALL_CATEGORIES(1, "All Categories"),
+    ALL_CATEGORIES(0, "All Categories"),
     ROLE_PLAYING(7, "角色扮演"),
     COMPETITIVE(8, "競技遊戲"),
     ACTION(9, "動作遊戲"),
@@ -22,22 +25,5 @@ public enum GameType {
     GameType(int id, String categoryName) {
         this.id = id;
         this.categoryName = categoryName;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public String getCategoryName() {
-        return categoryName;
-    }
-
-    public static GameType getById(int id) {
-        for (GameType gameType : values()) {
-            if (gameType.getId() == id) {
-                return gameType;
-            }
-        }
-        throw new IllegalArgumentException("Invalid id: " + id);
     }
 }

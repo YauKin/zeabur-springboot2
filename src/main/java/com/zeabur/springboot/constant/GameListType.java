@@ -4,8 +4,8 @@ import lombok.Getter;
 
 @Getter
 public enum GameListType {
-    USER_ORDER_LIST(1, "USER_ORDER_LIST"),
-    USER_ORDER_HISTORY(2, "USER_ORDER_HISTORY");
+    CURRENT_RENTAL_LIST(1, "CURRENT_RENTAL_LIST"),
+    RENTAL_HISTORY_LIST(2, "RENTAL_HISTORY_LIST");
 
     private final int id;
     private final String orderTypeName;
