@@ -1,6 +1,6 @@
 package com.zeabur.springboot.externalAPI.controller;
 
-import com.zeabur.springboot.ccgames.dto.*;
+import com.zeabur.springboot.ccgames.dto.request.*;
 import com.zeabur.springboot.externalAPI.service.CcGameService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

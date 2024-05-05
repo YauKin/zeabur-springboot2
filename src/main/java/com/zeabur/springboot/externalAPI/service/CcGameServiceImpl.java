@@ -1,6 +1,6 @@
 package com.zeabur.springboot.externalAPI.service;
 
-import com.zeabur.springboot.ccgames.dto.*;
+import com.zeabur.springboot.ccgames.dto.request.*;
 import com.zeabur.springboot.constant.GameType;
 import com.zeabur.springboot.helper.RestHelper;
 import org.springframework.beans.factory.annotation.Value;

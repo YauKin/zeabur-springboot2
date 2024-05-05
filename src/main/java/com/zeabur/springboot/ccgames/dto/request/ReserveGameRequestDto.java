@@ -1,4 +1,4 @@
-package com.zeabur.springboot.ccgames.dto;
+package com.zeabur.springboot.ccgames.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotNull;
@@ -7,8 +7,8 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class ReturnGameRequestDto extends CommonUserRequestDto{
+public class ReserveGameRequestDto extends CommonUserRequestDto{
     @NotNull
-    @JsonProperty("orderId")
-    String orderId;
+    @JsonProperty("gameId")
+    String gameId;
 }

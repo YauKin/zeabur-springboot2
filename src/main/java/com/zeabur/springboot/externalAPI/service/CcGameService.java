@@ -1,6 +1,6 @@
 package com.zeabur.springboot.externalAPI.service;
 
-import com.zeabur.springboot.ccgames.dto.*;
+import com.zeabur.springboot.ccgames.dto.request.*;
 
 public interface CcGameService {
 

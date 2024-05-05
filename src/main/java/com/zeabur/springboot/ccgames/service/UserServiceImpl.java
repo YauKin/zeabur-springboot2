@@ -1,6 +1,6 @@
 package com.zeabur.springboot.ccgames.service;
 
-import com.zeabur.springboot.ccgames.dto.LoginRequestDto;
+import com.zeabur.springboot.ccgames.dto.request.LoginRequestDto;
 import org.springframework.stereotype.Service;
 
 @Service

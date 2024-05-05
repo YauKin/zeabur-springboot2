@@ -1,4 +1,4 @@
-package com.zeabur.springboot.ccgames.dto;
+package com.zeabur.springboot.ccgames.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.zeabur.springboot.constant.GameListType;

@@ -1,4 +1,4 @@
-package com.zeabur.springboot.ccgames.dto;
+package com.zeabur.springboot.ccgames.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.zeabur.springboot.constant.GameType;
@@ -6,10 +6,10 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
-public class GameSearchRequestDto {
+public class GameListRequestDto {
+    @JsonProperty("gameType")
     @NotNull
-    @JsonProperty("key")
-    private String key;
+    private GameType gameType;
 
     @NotNull
     @JsonProperty("page")
