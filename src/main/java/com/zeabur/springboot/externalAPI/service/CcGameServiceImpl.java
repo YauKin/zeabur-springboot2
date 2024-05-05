@@ -67,9 +67,39 @@ public class CcGameServiceImpl implements CcGameService {
         return doGetIgnoreSSL(apiUrl);
     }
 
+    @Override
+    public String reserveGame(ReserveGameRequestDto reserveGameRequestDto) {
+        String apiUrl = ccGameUrl + "order/creatReserveOrder/?userId=" + reserveGameRequestDto.getUserId() +
+                "&pId=" + reserveGameRequestDto.getGameId() +
+                "&authLoginCode=" + reserveGameRequestDto.getAuthLoginCode();
+        return doGetIgnoreSSL(apiUrl);
+    }
+
+    @Override
+    public String cancelReserve(CancelReserveRequestDto cancelReserveRequestDto){
+        String apiUrl = ccGameUrl + "order/orderCancel/?userId=" + cancelReserveRequestDto.getUserId() +
+                "&oId=" + cancelReserveRequestDto.getOrderId() +
+                "&authLoginCode=" + cancelReserveRequestDto.getAuthLoginCode();
+        return doGetIgnoreSSL(apiUrl);
+    }
+
+    @Override
+    public String rentGame(RentGameRequestDto rentGameRequestDto) {
+        String apiUrl = ccGameUrl + "order/creatRentOrder/?userId=" + rentGameRequestDto.getUserId() +
+                "&pId=" + rentGameRequestDto.getGameId() +
+                "&authLoginCode=" + rentGameRequestDto.getAuthLoginCode();
+        return doGetIgnoreSSL(apiUrl);
+    }
+
+    @Override
+    public String returnGame(ReturnGameRequestDto returnGameRequestDto) {
+        String apiUrl = ccGameUrl + "order/orderGiveBack/?userId=" + returnGameRequestDto.getUserId() +
+                "&oId=" + returnGameRequestDto.getOrderId() +
+                "&authLoginCode=" + returnGameRequestDto.getAuthLoginCode();
+        return doGetIgnoreSSL(apiUrl);
+    }
+
     private String doGetIgnoreSSL(String apiUrl){
         return restHelper.doGet(apiUrl, String.class, headers, true);
     }
-
-
 }

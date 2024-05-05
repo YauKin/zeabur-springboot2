@@ -7,7 +7,6 @@ import lombok.Data;
 
 @Data
 public class GameSearchRequestDto {
-
     @NotNull
     @JsonProperty("key")
     private String key;

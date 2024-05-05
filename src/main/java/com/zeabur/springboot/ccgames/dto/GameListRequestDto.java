@@ -7,7 +7,6 @@ import lombok.Data;
 
 @Data
 public class GameListRequestDto {
-
     @JsonProperty("gameType")
     @NotNull
     private GameType gameType;

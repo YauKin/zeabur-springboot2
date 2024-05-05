@@ -3,15 +3,12 @@ package com.zeabur.springboot.ccgames.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Data
-public class LoginRequestDto {
+@EqualsAndHashCode(callSuper = true)
+public class ReserveGameRequestDto extends CommonUserRequestDto{
     @NotNull
-    @JsonProperty("username")
-    private String username;
-
-    @NotNull
-    @JsonProperty("password")
-    private String password;
-
+    @JsonProperty("gameId")
+    String gameId;
 }

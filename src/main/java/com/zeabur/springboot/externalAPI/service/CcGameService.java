@@ -15,4 +15,12 @@ public interface CcGameService {
     String getReservedGameList(UserReservedGameListRequestDto userReservedGameListRequestDto);
 
     String getUserRentalGameHistory(UserRentalGameHistoryRequestDto userRentalGameHistoryRequestDto);
+
+    String reserveGame(ReserveGameRequestDto reserveGameRequestDto);
+
+    String cancelReserve(CancelReserveRequestDto cancelReserveRequestDto);
+
+    String rentGame(RentGameRequestDto rentGameRequestDto);
+
+    String returnGame(ReturnGameRequestDto returnGameRequestDto);
 }

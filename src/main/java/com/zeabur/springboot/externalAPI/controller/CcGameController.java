@@ -59,4 +59,32 @@ public class CcGameController {
         return ccGameService.getUserRentalGameHistory(userRentalGameHistoryRequestDto);
     }
 
+    @PostMapping("/reserveGame")
+    public String reserveGame(
+            @Valid @RequestBody ReserveGameRequestDto reserveGameRequestDto
+    ) {
+        return ccGameService.reserveGame(reserveGameRequestDto);
+    }
+
+    @PostMapping("/cancelRental")
+    public String cancelRental(
+            @Valid @RequestBody CancelReserveRequestDto cancelReserveRequestDto
+    ) {
+        return ccGameService.cancelReserve(cancelReserveRequestDto);
+    }
+
+    @PostMapping("/rentGame")
+    public String rentGame(
+            @Valid @RequestBody RentGameRequestDto rentGameRequestDto
+    ) {
+        return ccGameService.rentGame(rentGameRequestDto);
+    }
+
+    @PostMapping("/returnGame")
+    public String returnGame(
+            @Valid @RequestBody ReturnGameRequestDto returnGameRequestDto
+    ) {
+        return ccGameService.returnGame(returnGameRequestDto);
+    }
+
 }
