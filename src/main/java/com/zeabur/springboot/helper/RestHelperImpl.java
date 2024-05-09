@@ -23,6 +23,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.SSLContext;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.security.GeneralSecurityException;
 import java.util.Map;
 
@@ -70,10 +72,10 @@ public class RestHelperImpl implements RestHelper {
         try {
             RestTemplate client = ignoreSSL ? getRestTemplateIgnoreSSL() : restTemplate;
             // Log the API call
-            logger.info("Calling API for URL: {}", url);
+            apiLoggerInfo("Calling API for URL:", url);
             ResponseEntity<T> responseEntity = client.exchange(url, HttpMethod.GET, entity, responseClass);
             // Log the API call success
-            logger.info("API called successfully for URL: {}", url);
+            apiLoggerInfo("API called successfully for URL:", url);
             return responseEntity;
         } catch (Exception e) {
             logException(e);
@@ -114,28 +116,23 @@ public class RestHelperImpl implements RestHelper {
     private void logException(Exception e) {
         logger.error("Error during REST operation", e);
     }
-//    private Map<String, String> getRequestAttributes() {
-//        Map<String, String> attributeMap = new HashMap<>();
-//        try {
-//            RequestAttributes requestAttributes = RequestContextHolder.getRequestAttributes();
-//            if (requestAttributes != null) {
-//                for (String key : requestAttributes.getAttributeNames(RequestAttributes.SCOPE_REQUEST)) {
-//                    Object value = requestAttributes.getAttribute(key, RequestAttributes.SCOPE_REQUEST);
-//                    if (value instanceof String) { // 检查属性值是否为String类型
-//                        attributeMap.put(key, (String) value);
-//                    } else {
-//                        // 如果值不是字符串，你可以选择如何处理它
-//                        // 例如，记录一个警告，或者转换为字符串
-//                        logger.warn("Request attribute value for key " + key + " is not a String: " + value);
-//                        // 如果你决定将非字符串值转换为字符串，可以取消注释下面的代码行
-//                        String valueStr = (value != null) ? value.toString() : ""; // 或者选择其他非null值处理方式
-//                        attributeMap.put(key, valueStr);
-//                    }
-//                }
-//            }
-//        } catch (Exception e) {
-//            logger.error("Error getting request attributes", e);
-//        }
-//        return attributeMap;
-//    }
+    public static void apiLoggerInfo(String logMessage, String urlString) {
+        try {
+            URI uri = new URI(urlString);
+            String path = uri.getPath();
+            String apiName = extractApiNameFromPath(path);
+            logger.info("{}: {}", logMessage, apiName);
+        } catch (URISyntaxException e) {
+            logger.error("Invalid URL syntax: {}", urlString, e);
+        }
+    }
+    private static String extractApiNameFromPath(String path) {
+        String[] pathParts = path.split("/");
+        // Ensure there are enough parts in the path to extract the API name
+        if (pathParts.length > 2) {
+            return pathParts[1] + "/" + pathParts[2]+ "/" + pathParts[3];
+        } else {
+            return path;
+        }
+    }
 }
