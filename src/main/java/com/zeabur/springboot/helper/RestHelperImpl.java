@@ -1,5 +1,6 @@
 package com.zeabur.springboot.helper;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.apache.hc.client5.http.impl.io.BasicHttpClientConnectionManager;
@@ -19,19 +20,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import javax.net.ssl.SSLContext;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.GeneralSecurityException;
 import java.util.Map;
 
+@Slf4j
 @Service
 public class RestHelperImpl implements RestHelper {
-    private static final Logger logger = LoggerFactory.getLogger(RestHelperImpl.class);
-
     private final RestTemplate restTemplate;
     private RestTemplate restTemplateIgnoreSSL;
 
@@ -58,7 +55,7 @@ public class RestHelperImpl implements RestHelper {
     @Override
     public <T> ResponseEntity<T> doGetForEntity(String url, Class<T> responseClass, boolean ignoreSSL, Map<String, String> headersMap) {
         if (url == null || responseClass == null) {
-            logger.error("URL or ResponseClass provided is null");
+            log.error("URL or ResponseClass provided is null");
             return null;
         }
         // Create and populate HttpHeaders
@@ -72,10 +69,10 @@ public class RestHelperImpl implements RestHelper {
         try {
             RestTemplate client = ignoreSSL ? getRestTemplateIgnoreSSL() : restTemplate;
             // Log the API call
-            apiLoggerInfo("Calling API for URL:", url);
+            apiLoggerInfo("3rd party API call for URL", url);
             ResponseEntity<T> responseEntity = client.exchange(url, HttpMethod.GET, entity, responseClass);
             // Log the API call success
-            apiLoggerInfo("API called successfully for URL:", url);
+            apiLoggerInfo("3rd party API called successfully for URL", url);
             return responseEntity;
         } catch (Exception e) {
             logException(e);
@@ -114,16 +111,16 @@ public class RestHelperImpl implements RestHelper {
     }
 
     private void logException(Exception e) {
-        logger.error("Error during REST operation", e);
+        log.error("Error during REST operation", e);
     }
     public static void apiLoggerInfo(String logMessage, String urlString) {
         try {
             URI uri = new URI(urlString);
             String path = uri.getPath();
             String apiName = extractApiNameFromPath(path);
-            logger.info("{}: {}", logMessage, apiName);
+            log.info("{}: {}", logMessage, apiName);
         } catch (URISyntaxException e) {
-            logger.error("Invalid URL syntax: {}", urlString, e);
+            log.error("Invalid URL syntax: {}", urlString, e);
         }
     }
     private static String extractApiNameFromPath(String path) {
