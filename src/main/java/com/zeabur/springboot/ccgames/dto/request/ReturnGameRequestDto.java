@@ -1,0 +1,14 @@
+package com.zeabur.springboot.ccgames.dto.request;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.validation.constraints.NotNull;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+@Data
+@EqualsAndHashCode(callSuper = true)
+public class ReturnGameRequestDto extends CommonUserRequestDto{
+    @NotNull
+    @JsonProperty("orderId")
+    String orderId;
+}
