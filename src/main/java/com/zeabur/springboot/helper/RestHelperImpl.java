@@ -20,10 +20,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
 import javax.net.ssl.SSLContext;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.GeneralSecurityException;
+import java.util.Arrays;
 import java.util.Map;
 
 @Slf4j
@@ -69,10 +71,10 @@ public class RestHelperImpl implements RestHelper {
         try {
             RestTemplate client = ignoreSSL ? getRestTemplateIgnoreSSL() : restTemplate;
             // Log the API call
-            apiLoggerInfo("3rd party API call for URL", url);
+            apiLoggerInfo("3rd party API call", url);
             ResponseEntity<T> responseEntity = client.exchange(url, HttpMethod.GET, entity, responseClass);
             // Log the API call success
-            apiLoggerInfo("3rd party API called successfully for URL", url);
+            apiLoggerInfo("3rd party API called successfully", url);
             return responseEntity;
         } catch (Exception e) {
             logException(e);
@@ -115,21 +117,9 @@ public class RestHelperImpl implements RestHelper {
     }
     public static void apiLoggerInfo(String logMessage, String urlString) {
         try {
-            URI uri = new URI(urlString);
-            String path = uri.getPath();
-            String apiName = extractApiNameFromPath(path);
-            log.info("{}: {}", logMessage, apiName);
+            log.info("{}: {}", logMessage, new URI(urlString).getPath());
         } catch (URISyntaxException e) {
             log.error("Invalid URL syntax: {}", urlString, e);
-        }
-    }
-    private static String extractApiNameFromPath(String path) {
-        String[] pathParts = path.split("/");
-        // Ensure there are enough parts in the path to extract the API name
-        if (pathParts.length > 2) {
-            return pathParts[1] + "/" + pathParts[2]+ "/" + pathParts[3];
-        } else {
-            return path;
         }
     }
 }

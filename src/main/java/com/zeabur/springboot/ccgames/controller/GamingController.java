@@ -2,7 +2,8 @@ package com.zeabur.springboot.ccgames.controller;
 
 import com.zeabur.springboot.ccgames.dto.request.GameListRequestDto;
 import com.zeabur.springboot.ccgames.dto.request.GameSearchRequestDto;
-import com.zeabur.springboot.ccgames.dto.response.GameListResponseDto;
+import com.zeabur.springboot.externalAPI.dto.response.GameListResponseDto;
+import com.zeabur.springboot.externalAPI.dto.response.GameListRowResponseDto;
 import com.zeabur.springboot.ccgames.service.GamingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,7 +23,7 @@ public class GamingController {
     }
 
     @PostMapping("/gamelist")
-    public List<GameListResponseDto> getGameList(GameListRequestDto request){
+    public List<GameListRowResponseDto> getGameList(GameListRequestDto request) throws Exception {
         return gamingService.getGameList(request);
     }
 
