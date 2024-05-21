@@ -1,7 +1,6 @@
 package com.zeabur.springboot.externalAPI.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.google.gson.annotations.SerializedName;
 import lombok.Data;
 
 @Data
@@ -22,7 +21,6 @@ public class GameListRowResponseDto {
     String cashPledge;
     String banner;
     @JsonProperty("abstract")
-    @SerializedName("abstract")
     String abstractInfo; // Use @SerializedName to map "abstract" JSON field to "abstractInfo"
     String content;
     String useStatus;
