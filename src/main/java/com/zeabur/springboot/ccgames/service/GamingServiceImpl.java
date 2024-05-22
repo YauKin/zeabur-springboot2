@@ -1,15 +1,16 @@
 package com.zeabur.springboot.ccgames.service;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.zeabur.springboot.ccgames.dto.request.GameListRequestDto;
 import com.zeabur.springboot.ccgames.dto.request.GameSearchRequestDto;
+import com.zeabur.springboot.constant.ErrorType;
+import com.zeabur.springboot.exception.FunctionalException;
 import com.zeabur.springboot.externalAPI.dto.response.ApiResponse;
 import com.zeabur.springboot.externalAPI.dto.response.GameListResponseDto;
 import com.zeabur.springboot.externalAPI.dto.response.GameListRowResponseDto;
-import com.zeabur.springboot.converter.Converter;
 import com.zeabur.springboot.externalAPI.service.CcGameService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
@@ -27,10 +28,19 @@ public class GamingServiceImpl implements GamingService {
     }
 
     @Override
-    public List<GameListRowResponseDto> getGameList(GameListRequestDto gameListRequestDto) throws Exception {
-        String jsonString = ccGameService.getGameList(gameListRequestDto);
-        ApiResponse<GameListResponseDto> apiResponse = Converter.jsonToObject(jsonString, new TypeReference<>() {});
-        return apiResponse.getData().getRows();
+    public ResponseEntity<List<GameListRowResponseDto>> getGameList(GameListRequestDto gameListRequestDto) throws Exception {
+        ApiResponse<GameListResponseDto> response = ccGameService.getGameList(gameListRequestDto);
+        if (response.getCode() == 200) {
+            if (response.getData() != null && response.getData().getRows() != null) {
+                return ResponseEntity.ok(response.getData().getRows());
+            } else {
+                log.error("Game list not found: response data is null or empty");
+                throw new FunctionalException(ErrorType.GAME_LIST_NOT_FOUND, "Game list not found: response data is null or empty");
+            }
+        } else {
+            log.error("Failed to get game list from external API, response code: {}", response.getCode());
+            throw new FunctionalException(ErrorType.GAME_LIST_NOT_FOUND, "Failed to get game list from external API with response code: " + response.getCode());
+        }
     }
 
     @Override

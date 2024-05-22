@@ -1,6 +1,8 @@
 package com.zeabur.springboot.externalAPI.service;
 
 import com.zeabur.springboot.ccgames.dto.request.*;
+import com.zeabur.springboot.externalAPI.dto.response.ApiResponse;
+import com.zeabur.springboot.externalAPI.dto.response.GameListResponseDto;
 
 public interface CcGameService {
 
@@ -8,7 +10,7 @@ public interface CcGameService {
 
     String getUserInfo(UserInfoRequestDto userInfoRequestDto);
 
-    String getGameList(GameListRequestDto gameListRequestDto);
+    ApiResponse<GameListResponseDto> getGameList(GameListRequestDto gameListRequestDto) throws Exception;
 
     String searchByGameList(GameSearchRequestDto gameSearchRequestDto);
 

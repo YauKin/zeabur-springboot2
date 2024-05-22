@@ -1,7 +1,11 @@
 package com.zeabur.springboot.externalAPI.service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.zeabur.springboot.ccgames.dto.request.*;
 import com.zeabur.springboot.constant.GameType;
+import com.zeabur.springboot.converter.Converter;
+import com.zeabur.springboot.externalAPI.dto.response.ApiResponse;
+import com.zeabur.springboot.externalAPI.dto.response.GameListResponseDto;
 import com.zeabur.springboot.helper.RestHelper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -37,13 +41,13 @@ public class CcGameServiceImpl implements CcGameService {
     }
 
     @Override
-    public String getGameList(GameListRequestDto gameListRequestDto) {
+    public ApiResponse<GameListResponseDto> getGameList(GameListRequestDto gameListRequestDto) throws Exception {
         /* this api need page parameter, if page is null, set it to 1 */
         gameListRequestDto.setPage(Optional.ofNullable(gameListRequestDto.getPage()).orElse(1));
         /* this api need gameType parameter, if gameType is null, set it to 0 */
         gameListRequestDto.setGameType(Optional.ofNullable(gameListRequestDto.getGameType()).orElse(GameType.ALL_CATEGORIES));
         String apiUrl = ccGameUrl + "product/getProductList/?page=" + gameListRequestDto.getPage() + "&cId=" + gameListRequestDto.getGameType().getId();
-        return doGetIgnoreSSL(apiUrl);
+        return Converter.jsonToObject(doGetIgnoreSSL(apiUrl), new TypeReference<ApiResponse<GameListResponseDto>>() {});
     }
 
     @Override

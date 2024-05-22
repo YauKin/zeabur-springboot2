@@ -1,6 +1,8 @@
 package com.zeabur.springboot.externalAPI.controller;
 
 import com.zeabur.springboot.ccgames.dto.request.*;
+import com.zeabur.springboot.externalAPI.dto.response.ApiResponse;
+import com.zeabur.springboot.externalAPI.dto.response.GameListResponseDto;
 import com.zeabur.springboot.externalAPI.service.CcGameService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,9 +34,9 @@ public class CcGameController {
     }
 
     @PostMapping("/getGameList")
-    public String getGameList(
+    public ApiResponse<GameListResponseDto> getGameList(
             @Valid @RequestBody GameListRequestDto gameListRequestDto
-    ) {
+    ) throws Exception {
         return ccGameService.getGameList(gameListRequestDto);
     }
 

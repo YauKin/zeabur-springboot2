@@ -25,7 +25,6 @@ import javax.net.ssl.SSLContext;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.GeneralSecurityException;
-import java.util.Arrays;
 import java.util.Map;
 
 @Slf4j
@@ -71,10 +70,10 @@ public class RestHelperImpl implements RestHelper {
         try {
             RestTemplate client = ignoreSSL ? getRestTemplateIgnoreSSL() : restTemplate;
             // Log the API call
-            apiLoggerInfo("3rd party API call", url);
+            log.info("Calling 3rd party API: {}", new URI(url).getPath());
             ResponseEntity<T> responseEntity = client.exchange(url, HttpMethod.GET, entity, responseClass);
             // Log the API call success
-            apiLoggerInfo("3rd party API called successfully", url);
+            log.info("3rd party API called, response status code: {}", responseEntity.getStatusCode());
             return responseEntity;
         } catch (Exception e) {
             logException(e);
@@ -114,12 +113,5 @@ public class RestHelperImpl implements RestHelper {
 
     private void logException(Exception e) {
         log.error("Error during REST operation", e);
-    }
-    public static void apiLoggerInfo(String logMessage, String urlString) {
-        try {
-            log.info("{}: {}", logMessage, new URI(urlString).getPath());
-        } catch (URISyntaxException e) {
-            log.error("Invalid URL syntax: {}", urlString, e);
-        }
     }
 }
