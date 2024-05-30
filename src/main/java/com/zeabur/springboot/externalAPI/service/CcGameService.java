@@ -3,16 +3,17 @@ package com.zeabur.springboot.externalAPI.service;
 import com.zeabur.springboot.ccgames.dto.request.*;
 import com.zeabur.springboot.externalAPI.dto.response.ApiResponse;
 import com.zeabur.springboot.externalAPI.dto.response.GameListResponseDto;
+import com.zeabur.springboot.externalAPI.dto.response.LoginResponseDto;
 
 public interface CcGameService {
 
-    String login(LoginRequestDto loginRequestDto);
+    ApiResponse<LoginResponseDto> login(LoginRequestDto loginRequestDto) throws Exception;
 
     String getUserInfo(UserInfoRequestDto userInfoRequestDto);
 
     ApiResponse<GameListResponseDto> getGameList(GameListRequestDto gameListRequestDto) throws Exception;
 
-    String searchByGameList(GameSearchRequestDto gameSearchRequestDto);
+    ApiResponse<GameListResponseDto> searchByGameList(GameSearchRequestDto gameSearchRequestDto) throws Exception;
 
     String getReservedGameList(UserReservedGameListRequestDto userReservedGameListRequestDto);
 

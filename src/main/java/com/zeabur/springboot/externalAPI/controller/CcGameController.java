@@ -3,6 +3,7 @@ package com.zeabur.springboot.externalAPI.controller;
 import com.zeabur.springboot.ccgames.dto.request.*;
 import com.zeabur.springboot.externalAPI.dto.response.ApiResponse;
 import com.zeabur.springboot.externalAPI.dto.response.GameListResponseDto;
+import com.zeabur.springboot.externalAPI.dto.response.LoginResponseDto;
 import com.zeabur.springboot.externalAPI.service.CcGameService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +22,8 @@ public class CcGameController {
     }
 
     @PostMapping(value = "/login", produces = {"application/json"}, consumes = {"application/json"})
-    public String login(
-            @Valid @RequestBody LoginRequestDto loginRequestDto) {
+    public ApiResponse<LoginResponseDto> login(
+            @Valid @RequestBody LoginRequestDto loginRequestDto) throws Exception {
         return ccGameService.login(loginRequestDto);
     }
 
@@ -41,9 +42,9 @@ public class CcGameController {
     }
 
     @PostMapping("/searchGame")
-    public String searchGame(
+    public ApiResponse<GameListResponseDto> searchGame(
             @Valid @RequestBody GameSearchRequestDto gameSearchRequestDto
-    ) {
+    ) throws Exception {
         return ccGameService.searchByGameList(gameSearchRequestDto);
     }
 

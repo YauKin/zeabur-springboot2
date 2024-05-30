@@ -12,6 +12,6 @@ public interface GamingService {
 
     ResponseEntity<List<GameListRowResponseDto>> getGameList(GameListRequestDto gameListRequestDto) throws Exception;
 
-    List<GameListResponseDto> searchGameByKey(GameSearchRequestDto gameSearchRequestDto);
+    ResponseEntity<List<GameListRowResponseDto>> searchGameByKey(GameSearchRequestDto gameSearchRequestDto) throws Exception;
 
 }

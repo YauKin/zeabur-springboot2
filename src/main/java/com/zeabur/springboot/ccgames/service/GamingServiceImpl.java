@@ -30,9 +30,21 @@ public class GamingServiceImpl implements GamingService {
     @Override
     public ResponseEntity<List<GameListRowResponseDto>> getGameList(GameListRequestDto gameListRequestDto) throws Exception {
         ApiResponse<GameListResponseDto> response = ccGameService.getGameList(gameListRequestDto);
+        return getListResponseEntity(response);
+    }
+
+    @Override
+    public
+    ResponseEntity<List<GameListRowResponseDto>> searchGameByKey(GameSearchRequestDto gameSearchRequestDto) throws Exception {
+        ApiResponse<GameListResponseDto> response = ccGameService.searchByGameList(gameSearchRequestDto);
+        return getListResponseEntity(response);
+    }
+
+    private ResponseEntity<List<GameListRowResponseDto>> getListResponseEntity(ApiResponse<GameListResponseDto> response) {
         if (response.getCode() == 200) {
-            if (response.getData() != null && response.getData().getRows() != null) {
-                return ResponseEntity.ok(response.getData().getRows());
+            GameListResponseDto data = response.getData();
+            if (data != null && data.getRows() != null) {
+                return ResponseEntity.ok(data.getRows());
             } else {
                 log.error("Game list not found: response data is null or empty");
                 throw new FunctionalException(ErrorType.GAME_LIST_NOT_FOUND, "Game list not found: response data is null or empty");
@@ -41,13 +53,5 @@ public class GamingServiceImpl implements GamingService {
             log.error("Failed to get game list from external API, response code: {}", response.getCode());
             throw new FunctionalException(ErrorType.GAME_LIST_NOT_FOUND, "Failed to get game list from external API with response code: " + response.getCode());
         }
-    }
-
-    @Override
-    public List<GameListResponseDto> searchGameByKey(GameSearchRequestDto gameSearchRequestDto) {
-        String jsonString = ccGameService.searchByGameList(gameSearchRequestDto);
-        // use Jackson to deserialize the JSON string to List<GameListResponseDto>
-        return Collections.emptyList();
-
     }
 }

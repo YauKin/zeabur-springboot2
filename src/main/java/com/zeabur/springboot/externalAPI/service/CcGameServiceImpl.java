@@ -6,6 +6,7 @@ import com.zeabur.springboot.constant.GameType;
 import com.zeabur.springboot.converter.Converter;
 import com.zeabur.springboot.externalAPI.dto.response.ApiResponse;
 import com.zeabur.springboot.externalAPI.dto.response.GameListResponseDto;
+import com.zeabur.springboot.externalAPI.dto.response.LoginResponseDto;
 import com.zeabur.springboot.helper.RestHelper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -29,9 +30,9 @@ public class CcGameServiceImpl implements CcGameService {
     }
 
     @Override
-    public String login(LoginRequestDto loginRequestDto) {
+    public ApiResponse<LoginResponseDto> login(LoginRequestDto loginRequestDto) throws Exception {
         String apiUrl = ccGameUrl + "user/login/?phone=" + loginRequestDto.getUsername() + "&pwd=" + loginRequestDto.getPassword();
-        return doGetIgnoreSSL(apiUrl);
+        return Converter.jsonToObject(doGetIgnoreSSL(apiUrl), new TypeReference<ApiResponse<LoginResponseDto>>() {});
     }
 
     @Override
@@ -51,10 +52,11 @@ public class CcGameServiceImpl implements CcGameService {
     }
 
     @Override
-    public String searchByGameList(GameSearchRequestDto gameSearchRequestDto) {
+    public ApiResponse<GameListResponseDto> searchByGameList(GameSearchRequestDto gameSearchRequestDto) throws Exception {
         gameSearchRequestDto.setPage(Optional.ofNullable(gameSearchRequestDto.getPage()).orElse(1));
-        String apiUrl = ccGameUrl + "product/getProductList/?page=" + gameSearchRequestDto.getPage() + "&key=" + gameSearchRequestDto.getKey();
-        return doGetIgnoreSSL(apiUrl);
+        String apiUrl = ccGameUrl + "product/getProductList/?page=" + gameSearchRequestDto.getPage() + "&key=" + gameSearchRequestDto.getSearchText();
+        String response = doGetIgnoreSSL(apiUrl);
+        return Converter.jsonToObject(response, new TypeReference<ApiResponse<GameListResponseDto>>() {});
     }
 
     @Override
