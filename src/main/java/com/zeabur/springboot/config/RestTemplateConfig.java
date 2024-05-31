@@ -30,7 +30,7 @@ public class RestTemplateConfig {
      * @return a RestTemplate instance configured to trust all SSL certificates.
      * @throws GeneralSecurityException if there is a problem with the SSL context configuration.
      */
-    @Bean
+    @Bean(name = "restTemplateWithTrustAllCerts")
     public RestTemplate createRestTemplateWithTrustAllCerts() throws GeneralSecurityException {
         // Create a trust strategy that accepts all certificates.
         TrustStrategy acceptingTrustStrategy = (X509Certificate[] cert, String authType) -> true;
@@ -57,16 +57,12 @@ public class RestTemplateConfig {
                 .setConnectionManager(connectionManager)
                 .addRequestInterceptorFirst((request, entity, context) -> {
                     if (context.getAttribute("http.cookie-origin") != null) {
-                        log.info("CCGames API Request: {} {}", request.getMethod(), request.getPath());
-                    }else {
-                        log.info("CCGames API Direct Request: {} {}", request.getMethod(), request.getPath());
+                        log.info("3rd Party API Request: {} {}", request.getMethod(), request.getPath());
                     }
                 })
                 .addResponseInterceptorLast((response, entity, context) -> {
                     if (response.getCode() != 301) {
-                        log.info("CCGames API Response: {} {}", response.getCode(), response.getReasonPhrase());
-                    }else {
-                        log.info("CCGames API Redirect Response: {} {}", response.getCode(), response.getReasonPhrase());
+                        log.info("3rd Party API Response: {} {}", response.getCode(), response.getReasonPhrase());
                     }
                 })
                 .build();

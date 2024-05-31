@@ -32,7 +32,8 @@ public class CcGameServiceImpl implements CcGameService {
     @Override
     public ApiResponse<LoginResponseDto> login(LoginRequestDto loginRequestDto) throws Exception {
         String apiUrl = ccGameUrl + "user/login/?phone=" + loginRequestDto.getUsername() + "&pwd=" + loginRequestDto.getPassword();
-        return Converter.jsonToObject(doGetIgnoreSSL(apiUrl), new TypeReference<ApiResponse<LoginResponseDto>>() {});
+        return doGetIgnoreSSL(apiUrl, new TypeReference<>() {});
+//        return Converter.jsonToObject(doGetIgnoreSSL(apiUrl), new TypeReference<ApiResponse<LoginResponseDto>>() {});
     }
 
     @Override
@@ -48,15 +49,17 @@ public class CcGameServiceImpl implements CcGameService {
         /* this api need gameType parameter, if gameType is null, set it to 0 */
         gameListRequestDto.setGameType(Optional.ofNullable(gameListRequestDto.getGameType()).orElse(GameType.ALL_CATEGORIES));
         String apiUrl = ccGameUrl + "product/getProductList/?page=" + gameListRequestDto.getPage() + "&cId=" + gameListRequestDto.getGameType().getId();
-        return Converter.jsonToObject(doGetIgnoreSSL(apiUrl), new TypeReference<ApiResponse<GameListResponseDto>>() {});
+        return doGetIgnoreSSL(apiUrl, new TypeReference<>() {});
+//        return Converter.jsonToObject(doGetIgnoreSSL(apiUrl), new TypeReference<ApiResponse<GameListResponseDto>>() {});
     }
 
     @Override
     public ApiResponse<GameListResponseDto> searchByGameList(GameSearchRequestDto gameSearchRequestDto) throws Exception {
         gameSearchRequestDto.setPage(Optional.ofNullable(gameSearchRequestDto.getPage()).orElse(1));
         String apiUrl = ccGameUrl + "product/getProductList/?page=" + gameSearchRequestDto.getPage() + "&key=" + gameSearchRequestDto.getSearchText();
-        String response = doGetIgnoreSSL(apiUrl);
-        return Converter.jsonToObject(response, new TypeReference<ApiResponse<GameListResponseDto>>() {});
+//        String response = doGetIgnoreSSL(apiUrl);
+        return doGetIgnoreSSL(apiUrl, new TypeReference<>() {});
+//        return Converter.jsonToObject(response, new TypeReference<ApiResponse<GameListResponseDto>>() {});
     }
 
     @Override
@@ -107,5 +110,9 @@ public class CcGameServiceImpl implements CcGameService {
 
     private String doGetIgnoreSSL(String apiUrl){
         return restHelper.doGet(apiUrl, String.class, headers, true);
+    }
+
+    private <T> T doGetIgnoreSSL(String apiUrl, TypeReference<T> typeRef) throws Exception {
+        return restHelper.doGet(apiUrl, typeRef, headers, true);
     }
 }
